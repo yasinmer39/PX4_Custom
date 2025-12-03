@@ -1,0 +1,43 @@
+motors:
+  - id: 0
+    pose: [0.689, -0.7535, 1, 0, 0, 0]
+    Kv: 85
+    voltage: 54
+    efficiency: 0.9
+    max_thrust: 370    # Newton kg*f
+    prop_diameter: 1.092 metre (43 inç)
+    motor_mass: 2.8       # motor+prop (kg)
+    prop_radius: 0.546    # metre (43 inç / 2)
+
+  - id: 1
+    pose: [-0.689, 0.7535174, 1, 0, 0, 0]
+    Kv: 85
+    voltage: 54
+    efficiency: 0.9
+    max_thrust: 370
+    prop_diameter: 1.092
+    motor_mass: 2.8       # motor+prop (kg)
+    prop_radius: 0.546    # metre (43 inç / 2)
+
+  - id: 2
+    pose: [0.689, 0.7535, 1, 0, 0, 0]
+    Kv: 85
+    voltage: 54
+    efficiency: 0.9
+    max_thrust: 370
+    prop_diameter: 1.092
+    motor_mass: 2.8       # motor+prop (kg)
+    prop_radius: 0.546    # metre (43 inç / 2)
+
+  - id: 3
+    pose: [-0.689, -0.7535, 1, 0, 0, 0]
+    Kv: 85
+    voltage: 54
+    efficiency: 0.9
+    max_thrust: 370
+    prop_diameter: 1.092
+    motor_mass: 2.8       # motor+prop (kg)
+    prop_radius: 0.546    # metre (43 inç / 2)
+
+base_mass: 45 #kg cinsinden motor ve pervane harici ağırlık
+
