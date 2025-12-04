@@ -202,53 +202,22 @@
 
       <!-- Sensörler -->
       <sensor name="air_pressure_sensor" type="air_pressure">
-        <gz_frame_id>base_link</gz_frame_id>
         <always_on>1</always_on>
         <update_rate>50</update_rate>
         <air_pressure>
           <pressure>
             <noise type="gaussian">
               <mean>0</mean>
-              <stddev>3</stddev>
+              <stddev>0.01</stddev>
             </noise>
           </pressure>
         </air_pressure>
       </sensor>
-
-      <sensor name="magnetometer_sensor" type="magnetometer">
-        <gz_frame_id>base_link</gz_frame_id>
-        <always_on>1</always_on>
-        <update_rate>100</update_rate>
-        <magnetometer>
-          <x><noise type="gaussian"><stddev>0.0001</stddev></noise></x>
-          <y><noise type="gaussian"><stddev>0.0001</stddev></noise></y>
-          <z><noise type="gaussian"><stddev>0.0001</stddev></noise></z>
-        </magnetometer>
-      </sensor>
-
       <sensor name="imu_sensor" type="imu">
-        <gz_frame_id>base_link</gz_frame_id>
         <always_on>1</always_on>
         <update_rate>250</update_rate>
-        <imu>
-          <angular_velocity>
-            <x><noise type="gaussian"><mean>0.0</mean><stddev>0.0008726646</stddev></noise></x>
-            <y><noise type="gaussian"><mean>0.0</mean><stddev>0.0008726646</stddev></noise></y>
-            <z><noise type="gaussian"><mean>0.0</mean><stddev>0.0008726646</stddev></noise></z>
-          </angular_velocity>
-          <linear_acceleration>
-            <x><noise type="gaussian"><mean>0.0</mean><stddev>0.00637</stddev></noise></x>
-            <y><noise type="gaussian"><mean>0.0</mean><stddev>0.00637</stddev></noise></y>
-            <z><noise type="gaussian"><mean>0.0</mean><stddev>0.00686</stddev></noise></z>
-          </linear_acceleration>
-        </imu>
       </sensor>
 
-      <sensor name="navsat_sensor" type="navsat">
-        <gz_frame_id>base_link</gz_frame_id>
-        <always_on>1</always_on>
-        <update_rate>30</update_rate>
-      </sensor>
     </link>
 
     <!-- === ROTORLAR ve EKLEMLER === -->
@@ -532,341 +501,69 @@
       </axis>
     </joint>
 
-    <!-- === GERÇEKÇİ YÜK KAYMASI === -->
-    <link name="payload_carriage">
-      <self_collide>false</self_collide>
-      <pose relative_to="base_ref">0 0 0.20 0 0 0</pose>
-      <inertial>
-        <mass>0.001</mass>
-        <inertia>
-          <ixx>1e-6</ixx><iyy>1e-6</iyy><izz>1e-6</izz>
-          <ixy>0</ixy><ixz>0</ixz><iyz>0</iyz>
-        </inertia>
-      </inertial>
-      <velocity_decay>
-        <linear>0.005</linear>
-        <angular>0.005</angular>
-      </velocity_decay>
-      <enable_wind>true</enable_wind>
-      <visual name="carriage_vis">
-        <geometry><box><size>0.03 0.03 0.03</size></box></geometry>
-        <material><ambient>0 1 0 1</ambient><diffuse>0 0.7 0 1</diffuse></material>
-      </visual>
-      <collision name="carriage_col">
-        <geometry><box><size>0.018 0.018 0.018</size></box></geometry>
-        <max_contacts>0</max_contacts>
-        <surface><contact><collide_bitmask>0x0000</collide_bitmask></contact></surface>
-      </collision>
-    </link>
-
-    <link name="payload_y">
-      <self_collide>false</self_collide>
-      <pose relative_to="base_ref">0 0 0.20 0 0 0</pose>
-      <inertial>
-        <mass>0.001</mass>
-        <inertia>
-          <ixx>1e-6</ixx><iyy>1e-6</iyy><izz>1e-6</izz>
-          <ixy>0</ixy><ixz>0</ixz><iyz>0</iyz>
-        </inertia>
-      </inertial>
-      <velocity_decay>
-        <linear>0.005</linear>
-        <angular>0.005</angular>
-      </velocity_decay>
-      <enable_wind>true</enable_wind>
-      <visual name="y_vis">
-        <geometry><box><size>0.03 0.03 0.03</size></box></geometry>
-        <material><ambient>0 0 1 1</ambient><diffuse>0 0 0.8 1</diffuse></material>
-      </visual>
-      <collision name="y_col">
-        <geometry><box><size>0.018 0.018 0.018</size></box></geometry>
-        <max_contacts>0</max_contacts>
-        <surface><contact><collide_bitmask>0x0000</collide_bitmask></contact></surface>
-      </collision>
-    </link>
-
-    <link name="payload_mass">
-      <self_collide>false</self_collide>
-      <pose relative_to="base_ref">0 0.16 0.20 0 0 0</pose>
-      <inertial>
-        <mass>3</mass>
-        <inertia>
-          <ixx>0.0146</ixx><iyy>0.0146</iyy><izz>0.0146</izz>
-          <ixy>0</ixy><ixz>0</ixz><iyz>0</iyz>
-        </inertia>
-      </inertial>
-      <velocity_decay>
-        <linear>0.002</linear>
-        <angular>0.002</angular>
-      </velocity_decay>
-      <enable_wind>true</enable_wind>
-      <visual name="mass_vis">
-        <geometry><box><size>0.05 0.05 0.05</size></box></geometry>
-        <material><ambient>1 0 0 1</ambient><diffuse>0.8 0 0 1</diffuse></material>
-      </visual>
-      <collision name="mass_col">
-        <geometry><box><size>0.03 0.03 0.03</size></box></geometry>
-        <max_contacts>0</max_contacts>
-        <surface><contact><collide_bitmask>0x0000</collide_bitmask></contact></surface>
-      </collision>
-    </link>
-
-    <joint name="payload_slide_x" type="prismatic">
-      <parent>base_link</parent>
-      <child>payload_carriage</child>
-      <pose>0 0 0 0 0 0</pose>
-      <axis>
-        <xyz>1 0 0</xyz>
-        <use_parent_model_frame>true</use_parent_model_frame>
-        <limit><lower>-0.1</lower><upper>0.1</upper><effort>200</effort><velocity>1.0</velocity></limit>
-        <dynamics><damping>0.1</damping><friction>0.0</friction></dynamics>
-      </axis>
-    </joint>
-
-    <joint name="payload_slide_y" type="prismatic">
-      <parent>payload_carriage</parent>
-      <child>payload_y</child>
-      <pose>0 0 0 0 0 0</pose>
-      <axis>
-        <xyz>0 1 0</xyz>
-        <use_parent_model_frame>true</use_parent_model_frame>
-        <limit><lower>-0.1</lower><upper>0.1</upper><effort>200</effort><velocity>1.0</velocity></limit>
-        <dynamics><damping>0.1</damping><friction>0.0</friction></dynamics>
-      </axis>
-    </joint>
-
-    <joint name="payload_slide_z" type="prismatic">
-      <parent>payload_y</parent>
-      <child>payload_mass</child>
-      <pose>0 0 0 0 0 0</pose>
-      <axis>
-        <xyz>0 0 1</xyz>
-        <use_parent_model_frame>true</use_parent_model_frame>
-        <limit><lower>-0.1</lower><upper>0.1</upper><effort>1000</effort><velocity>2.0</velocity></limit>
-        <dynamics><damping>0.1</damping><friction>0.0</friction></dynamics>
-      </axis>
-    </joint>
-
-    <!-- LW20 include
-    <include merge='true'>
-      <uri>model://LW20</uri>
-      <pose relative_to="base_ref">0 0 -0.079 0 1.57 0</pose>
-    </include>
-    <joint name="lidar_model_joint" type="fixed">
-      <parent>base_link</parent>
-      <child>lw20_link</child>
-      <pose>0 0 0 0 0 0</pose>
-    </joint>
-    <joint name="lidar_sensor_joint" type="fixed">
-      <parent>base_link</parent>
-      <child>lidar_sensor_link</child>
-    </joint>
-    <link name="lidar_sensor_link">
-      <pose relative_to="base_ref">0 0 -0.05 0 1.57 0</pose>
-      <inertial>
-        <mass>0.001</mass>
-        <inertia>
-          <ixx>0.00001</ixx>
-          <iyy>0.00001</iyy>
-          <izz>0.00001</izz>
-          <ixy>0.0</ixy>
-          <ixz>0.0</ixz>
-          <iyz>0.0</iyz>
-        </inertia>
-      </inertial>
-      <velocity_decay>
-        <linear>0.002</linear>
-        <angular>0.002</angular>
-      </velocity_decay>
-      <enable_wind>true</enable_wind>
-      <sensor name='lidar' type='gpu_lidar'>
-        <gz_frame_id>lidar_sensor_link</gz_frame_id>
-        <pose>0 0 0 3.14 0 0</pose>
-        <update_rate>50</update_rate>
-        <ray>
-          <scan>
-            <horizontal>
-              <samples>1</samples>
-              <resolution>1</resolution>
-              <min_angle>0</min_angle>
-              <max_angle>0</max_angle>
-            </horizontal>
-            <vertical>
-              <samples>1</samples>
-              <resolution>1</resolution>
-              <min_angle>0</min_angle>
-              <max_angle>0</max_angle>
-            </vertical>
-          </scan>
-          <range>
-            <min>0.1</min>
-            <max>100.0</max>
-            <resolution>0.01</resolution>
-          </range>
-        </ray>
-        <always_on>1</always_on>
-        <visualize>true</visualize>
-      </sensor>
-    </link>
-
-    <!-- === JOINT POSITION CONTROLLER (PID) === -->
-    <plugin filename="gz-sim-joint-position-controller-system"
-            name="gz::sim::systems::JointPositionController">
-      <joint_name>payload_slide_x</joint_name>
-      <p_gain>400</p_gain><i_gain>0</i_gain><d_gain>30</d_gain>
+    <plugin filename="gz-sim-multicopter-motor-model-system" name="gz::sim::systems::MulticopterMotorModel">
+      <jointName>rotor_0_joint</jointName>
+      <linkName>rotor_0</linkName>
+      <turningDirection>cw</turningDirection>
+      <timeConstantUp>0.0125</timeConstantUp>
+      <timeConstantDown>0.025</timeConstantDown>
+      <maxRotVelocity>357.5132</maxRotVelocity>
+      <motorConstant>2.896058e-03</motorConstant>
+      <momentConstant>0.046895</momentConstant>
+      <commandSubTopic>command/motor_speed</commandSubTopic>
+      <motorNumber>0</motorNumber>
+      <rotorDragCoefficient>1.000000e-05</rotorDragCoefficient>
+      <rollingMomentCoefficient>1.0e-06</rollingMomentCoefficient>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+      <motorType>velocity</motorType>
     </plugin>
-
-    <plugin filename="gz-sim-joint-position-controller-system"
-            name="gz::sim::systems::JointPositionController">
-      <joint_name>payload_slide_y</joint_name>
-      <p_gain>400</p_gain><i_gain>0</i_gain><d_gain>30</d_gain>
+    <plugin filename="gz-sim-multicopter-motor-model-system" name="gz::sim::systems::MulticopterMotorModel">
+      <jointName>rotor_1_joint</jointName>
+      <linkName>rotor_1</linkName>
+      <turningDirection>cw</turningDirection>
+      <timeConstantUp>0.0125</timeConstantUp>
+      <timeConstantDown>0.025</timeConstantDown>
+      <maxRotVelocity>357.5132</maxRotVelocity>
+      <motorConstant>2.896058e-03</motorConstant>
+      <momentConstant>0.046895</momentConstant>
+      <commandSubTopic>command/motor_speed</commandSubTopic>
+      <motorNumber>1</motorNumber>
+      <rotorDragCoefficient>1.000000e-05</rotorDragCoefficient>
+      <rollingMomentCoefficient>1.0e-06</rollingMomentCoefficient>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+      <motorType>velocity</motorType>
     </plugin>
-
-    <plugin filename="gz-sim-joint-position-controller-system"
-            name="gz::sim::systems::JointPositionController">
-      <joint_name>payload_slide_z</joint_name>
-      <p_gain>400</p_gain><i_gain>120</i_gain><d_gain>30</d_gain>
-      <cmd_max>2500</cmd_max>
-      <limit><lower>-1</lower><upper>1</upper><effort>1000</effort><velocity>3.0</velocity></limit>
+    <plugin filename="gz-sim-multicopter-motor-model-system" name="gz::sim::systems::MulticopterMotorModel">
+      <jointName>rotor_2_joint</jointName>
+      <linkName>rotor_2</linkName>
+      <turningDirection>ccw</turningDirection>
+      <timeConstantUp>0.0125</timeConstantUp>
+      <timeConstantDown>0.025</timeConstantDown>
+      <maxRotVelocity>357.5132</maxRotVelocity>
+      <motorConstant>2.896058e-03</motorConstant>
+      <momentConstant>0.046895</momentConstant>
+      <commandSubTopic>command/motor_speed</commandSubTopic>
+      <motorNumber>2</motorNumber>
+      <rotorDragCoefficient>1.000000e-05</rotorDragCoefficient>
+      <rollingMomentCoefficient>1.0e-06</rollingMomentCoefficient>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+      <motorType>velocity</motorType>
     </plugin>
-
-    <!-- ==== WIND PLUGIN (bug::USVWind) ==== 
-    <plugin filename="libusv_wind_plugin.so" name="bug::USVWind">
-      <!-- 0°:+X(Doğu), 90°:+Y(Kuzey) 
-      <wind_direction>45</wind_direction>
-      <wind_mean_velocity>10.0</wind_mean_velocity>
-      <var_wind_gain_constants>2.0</var_wind_gain_constants>
-      <var_wind_time_constants>0.7</var_wind_time_constants>
-      <yaw_damping>0.08</yaw_damping>
-      <var_wind_dir_gain>5.0</var_wind_dir_gain>
-      <var_wind_dir_time>20.0</var_wind_dir_time>
-      <update_rate>50</update_rate>
-      <topic_wind_speed>/bug/debug/wind/speed</topic_wind_speed>
-      <topic_wind_direction>/bug/debug/wind/direction</topic_wind_direction>
-      <cmd_wind_speed_topic>/bug/cmd/wind/speed</cmd_wind_speed_topic>
-      <cmd_wind_direction_topic>/bug/cmd/wind/direction</cmd_wind_direction_topic>
-      <cmd_wind_mean_speed_topic>/bug/cmd/wind/mean_speed</cmd_wind_mean_speed_topic>
-      <cmd_wind_mean_direction_topic>/bug/cmd/wind/mean_direction</cmd_wind_mean_direction_topic>
-      <cmd_wind_override_topic>/bug/cmd/wind/override</cmd_wind_override_topic>
-      <cmd_wind_coeff_topic>/bug/cmd/wind/coeff</cmd_wind_coeff_topic>
-      <use_cmd_speed>true</use_cmd_speed>
-      <use_cmd_direction>true</use_cmd_direction>
-      <cmd_wind_profile_topic>/bug/cmd/wind/profile</cmd_wind_profile_topic>
-
-      <wind>
-        <profiles>
-          <profile name="Normal">
-            <var_wind_gain_constants>4</var_wind_gain_constants>
-            <var_wind_time_constants>2.5</var_wind_time_constants>
-            <var_wind_dir_gain>4</var_wind_dir_gain>
-            <var_wind_dir_time>40</var_wind_dir_time>
-            <gust_rate_hz>0.0083</gust_rate_hz>
-            <gust_amp_mu>1.0</gust_amp_mu>
-            <gust_amp_sigma>0.5</gust_amp_sigma>
-            <gust_tau>3.0</gust_tau>
-            <diurnal_amp_speed>0.2</diurnal_amp_speed>
-            <diurnal_amp_dir>2.0</diurnal_amp_dir>
-            <diurnal_period>3600</diurnal_period>
-            <speed_scale>0.3</speed_scale>
-            <min_speed>0.3</min_speed>
-            <max_speed>10</max_speed>
-          </profile>
-
-          <profile name="Ani rüzgarlı">
-            <var_wind_gain_constants>6</var_wind_gain_constants>
-            <var_wind_time_constants>3.0</var_wind_time_constants>
-            <var_wind_dir_gain>7</var_wind_dir_gain>
-            <var_wind_dir_time>35</var_wind_dir_time>
-            <gust_rate_hz>0.0167</gust_rate_hz>
-            <gust_amp_mu>2.0</gust_amp_mu>
-            <gust_amp_sigma>1.0</gust_amp_sigma>
-            <gust_tau>2.5</gust_tau>
-            <diurnal_amp_speed>0.8</diurnal_amp_speed>
-            <diurnal_amp_dir>5.0</diurnal_amp_dir>
-            <diurnal_period>3600</diurnal_period>
-            <speed_scale>1.0</speed_scale>
-            <min_speed>0.5</min_speed>
-            <max_speed>20.0</max_speed>
-          </profile>
-
-          <profile name="Şiddetli">
-            <var_wind_gain_constants>10</var_wind_gain_constants>
-            <var_wind_time_constants>2.0</var_wind_time_constants>
-            <var_wind_dir_gain>10</var_wind_dir_gain>
-            <var_wind_dir_time>25</var_wind_dir_time>
-            <gust_rate_hz>0.033</gust_rate_hz>
-            <gust_amp_mu>3.0</gust_amp_mu>
-            <gust_amp_sigma>1.2</gust_amp_sigma>
-            <gust_tau>2.0</gust_tau>
-            <diurnal_amp_speed>1.2</diurnal_amp_speed>
-            <diurnal_amp_dir>8.0</diurnal_amp_dir>
-            <diurnal_period>3600</diurnal_period>
-            <speed_scale>1.0</speed_scale>
-            <min_speed>0.5</min_speed>
-            <max_speed>35.0</max_speed>
-          </profile>
-        </profiles>
-      </wind>
-
-      <!-- SCOPED link adı: model::link -->
-      <!-- BASE LINK 
-      <wind_obj>
-        <name>x500_custom_0</name>
-        <link_name>x500_custom_0::base_link</link_name>
-        <coeff_vector>0.64 0.62 0.097</coeff_vector>
-        <cop_offset>0.15 0.0 0.0</cop_offset>
-      </wind_obj>
-
-      <!-- ROTOR LİNKLERİ 
-      <wind_obj>
-        <name>x500_custom_0</name>
-        <link_name>x500_custom_0::rotor_0</link_name>
-        <coeff_vector>0.0008 0.0008 0.00005</coeff_vector>
-        <cop_offset>0.15 0.0 0.0</cop_offset>
-      </wind_obj>
-      <wind_obj>
-        <name>x500_custom_0</name>
-        <link_name>x500_custom_0::rotor_1</link_name>
-        <coeff_vector>0.0008 0.0008 0.00005</coeff_vector>
-        <cop_offset>0.15 0.0 0.0</cop_offset>
-      </wind_obj>
-      <wind_obj>
-        <name>x500_custom_0</name>
-        <link_name>x500_custom_0::rotor_2</link_name>
-        <coeff_vector>0.0008 0.0008 0.00005</coeff_vector>
-        <cop_offset>0.15 0.0 0.0</cop_offset>
-      </wind_obj>
-      <wind_obj>
-        <name>x500_custom_0</name>
-        <link_name>x500_custom_0::rotor_3</link_name>
-        <coeff_vector>0.0008 0.0008 0.00005</coeff_vector>
-        <cop_offset>0.15 0.0 0.0</cop_offset>
-      </wind_obj>
-
-      <!-- PAYLOAD: şasenin ≥ yarısı; büyük alan 
-      <wind_obj>
-        <name>x500_custom_0</name>
-        <link_name>x500_custom_0::payload_mass</link_name>
-        <coeff_vector>0.112 0.126 0.139</coeff_vector>
-        <cop_offset>0.15 0.0 0.0</cop_offset>
-      </wind_obj>
-
-      <!-- PAYLOAD EK (rüzgârdan etkilensin) 
-      <wind_obj>
-        <name>x500_custom_0</name>
-        <link_name>x500_custom_0::payload_carriage</link_name>
-        <coeff_vector>0.02 0.02 0.0</coeff_vector>
-        <cop_offset>0.05 0 0</cop_offset>
-      </wind_obj>
-
-      <wind_obj>
-        <name>x500_custom_0</name>
-        <link_name>x500_custom_0::payload_y</link_name>
-        <coeff_vector>0.02 0.02 0.0</coeff_vector>
-        <cop_offset>0.05 0 0</cop_offset>
-      </wind_obj>
+    <plugin filename="gz-sim-multicopter-motor-model-system" name="gz::sim::systems::MulticopterMotorModel">
+      <jointName>rotor_3_joint</jointName>
+      <linkName>rotor_3</linkName>
+      <turningDirection>ccw</turningDirection>
+      <timeConstantUp>0.0125</timeConstantUp>
+      <timeConstantDown>0.025</timeConstantDown>
+      <maxRotVelocity>357.5132</maxRotVelocity>
+      <motorConstant>2.896058e-03</motorConstant>
+      <momentConstant>0.046895</momentConstant>
+      <commandSubTopic>command/motor_speed</commandSubTopic>
+      <motorNumber>3</motorNumber>
+      <rotorDragCoefficient>1.000000e-05</rotorDragCoefficient>
+      <rollingMomentCoefficient>1.0e-06</rollingMomentCoefficient>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+      <motorType>velocity</motorType>
     </plugin>
--->
-
   </model>
 </sdf>
