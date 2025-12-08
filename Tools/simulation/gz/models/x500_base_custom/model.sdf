@@ -500,7 +500,7 @@
         <dynamics><spring_reference>0</spring_reference><spring_stiffness>0</spring_stiffness></dynamics>
       </axis>
     </joint>
-    
+
     <!-- === GERÇEKÇİ YÜK KAYMASI === -->
     <link name="payload_carriage">
       <self_collide>false</self_collide>
@@ -586,7 +586,6 @@
       <pose>0 0 0 0 0 0</pose>
       <axis>
         <xyz>1 0 0</xyz>
-        <use_parent_model_frame>true</use_parent_model_frame>
         <limit><lower>-0.1</lower><upper>0.1</upper><effort>200</effort><velocity>1.0</velocity></limit>
         <dynamics><damping>0.1</damping><friction>0.0</friction></dynamics>
       </axis>
@@ -598,7 +597,6 @@
       <pose>0 0 0 0 0 0</pose>
       <axis>
         <xyz>0 1 0</xyz>
-        <use_parent_model_frame>true</use_parent_model_frame>
         <limit><lower>-0.1</lower><upper>0.1</upper><effort>200</effort><velocity>1.0</velocity></limit>
         <dynamics><damping>0.1</damping><friction>0.0</friction></dynamics>
       </axis>
@@ -610,7 +608,6 @@
       <pose>0 0 0 0 0 0</pose>
       <axis>
         <xyz>0 0 1</xyz>
-        <use_parent_model_frame>true</use_parent_model_frame>
         <limit><lower>-0.1</lower><upper>0.1</upper><effort>1000</effort><velocity>2.0</velocity></limit>
         <dynamics><damping>0.1</damping><friction>0.0</friction></dynamics>
       </axis>
@@ -678,26 +675,35 @@
       </sensor>
     </link>
 
+    -->
+
     <!-- === JOINT POSITION CONTROLLER (PID) === -->
-    <plugin filename="gz-sim-joint-position-controller-system"
-            name="gz::sim::systems::JointPositionController">
-      <joint_name>payload_slide_x</joint_name>
-      <p_gain>400</p_gain><i_gain>0</i_gain><d_gain>30</d_gain>
-    </plugin>
+<plugin filename="gz-sim-joint-controller-system"
+        name="gz::sim::systems::JointController">
+  <joint_name>payload_slide_x</joint_name>
+  <use_position_commands>true</use_position_commands>
+  <p_gain>1000</p_gain>
+  <i_gain>10</i_gain>
+  <d_gain>50</d_gain>
+</plugin>
 
-    <plugin filename="gz-sim-joint-position-controller-system"
-            name="gz::sim::systems::JointPositionController">
-      <joint_name>payload_slide_y</joint_name>
-      <p_gain>400</p_gain><i_gain>0</i_gain><d_gain>30</d_gain>
-    </plugin>
+<plugin filename="gz-sim-joint-controller-system"
+        name="gz::sim::systems::JointController">
+  <joint_name>payload_slide_y</joint_name>
+  <use_position_commands>true</use_position_commands>
+  <p_gain>1000</p_gain>
+  <i_gain>10</i_gain>
+  <d_gain>50</d_gain>
+</plugin>
 
-    <plugin filename="gz-sim-joint-position-controller-system"
-            name="gz::sim::systems::JointPositionController">
-      <joint_name>payload_slide_z</joint_name>
-      <p_gain>400</p_gain><i_gain>120</i_gain><d_gain>30</d_gain>
-      <cmd_max>2500</cmd_max>
-      <limit><lower>-1</lower><upper>1</upper><effort>1000</effort><velocity>3.0</velocity></limit>
-    </plugin>
+<plugin filename="gz-sim-joint-controller-system"
+        name="gz::sim::systems::JointController">
+  <joint_name>payload_slide_z</joint_name>
+  <use_position_commands>true</use_position_commands>
+  <p_gain>2000</p_gain>
+  <i_gain>50</i_gain>
+  <d_gain>100</d_gain>
+</plugin>
 
     <!-- ==== WIND PLUGIN (bug::USVWind) ==== -->
     <plugin filename="libusv_wind_plugin_1.so" name="bug::USVWind">
@@ -900,6 +906,6 @@
       <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
       <motorType>velocity</motorType>
     </plugin>
-    
+
   </model>
 </sdf>

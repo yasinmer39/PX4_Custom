@@ -9,6 +9,7 @@
 
 PX4_SIMULATOR=${PX4_SIMULATOR:=gz}
 PX4_GZ_WORLD=${PX4_GZ_WORLD:=default}
+PX4_GZ_MODEL=${PX4_GZ_MODEL:=x500_base_custom}
 PX4_SIM_MODEL=${PX4_SIM_MODEL:=x500_base_custom}
 
 param set-default SIM_GZ_EN 1
